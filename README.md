@@ -1,80 +1,86 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+Splashscreen in react-native android.
+Follow the given steps
+Importent:
 
-# Getting Started
+your_splash means for image name.
+There you will find minmap folders
+1.) Initialise a bare react native app (if not already done).
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+2.) Install react-native-splash-screen and link the library.
 
-## Step 1: Start the Metro Server
+npm i react-native-splash-screen
+3.) Add your_splash.png to all minmap folders.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+Go to android/app/src/main/res
+There you will find minmap folders like (mipmap-hdpi, mipmap-mdpi, etc.)
+4.) Inside the res directory, create a folder named drawable. Inside that, ceate a file named background_splash.xml
 
-To start Metro, run the following command from the _root_ of your React Native project:
+Add the below code to the file
 
-```bash
-# using npm
-npm start
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+ <item
+ android:drawable="@mipmap/your_splash"
+ android:gravity="fill" />
+</layer-list>
+5.) Inside the res directory, create a folder named layout. Inside that, ceate a file named launch_screen.xml
 
-# OR using Yarn
-yarn start
-```
+Add the below code to the file
 
-## Step 2: Start your Application
+<?xml version="1.0" encoding="utf-8"?>
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ android:orientation="vertical"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:background="@mipmap/bg_screen"
+/>
+6.) Go to res/values/styles.xml replace the code
 
-### For Android
+background_splash means for background_splash.xml file.
+<resources>
 
-```bash
-# using npm
-npm run android
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowBackground">@drawable/background_splash</item>
+    </style>
 
-# OR using Yarn
-yarn android
-```
+</resources>
 
-### For iOS
+7.) Go to MainActivity.java
 
-```bash
-# using npm
-npm run ios
+package com.splashexample; // change package name
 
-# OR using Yarn
-yarn ios
-```
+import com.facebook.react.ReactActivity;
+import org.devio.rn.splashscreen.SplashScreen; // add this
+import android.os.Bundle; // add this
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+public class MainActivity extends ReactActivity {
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+/\*\*
 
-## Step 3: Modifying your App
+- Returns the name of the main component registered from JavaScript. This is used to schedule
+- rendering of the component.
+  \*/
+  @Override // add this
+  protected void onCreate(Bundle savedInstanceState) { // add this
+  SplashScreen.show(this); // add this
+  super.onCreate(savedInstanceState); // add this
+  } // add this
+  @Override
+  protected String getMainComponentName() {
+  return "splashexample";
+  }
+  }
 
-Now that you have successfully run the app, let's modify it.
+8.) Go to App.js in the src folder.
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+at the top import SplashScreen from 'react-native-splash-screen';
+inside App function add useEffect (Make sure to import it)
+useEffect(() => {
+SplashScreen.hide();
+}, [])
+Best part begins-
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
-"# react_native_splash_screen" 
+Hit the terminal and write react-native run-android
